@@ -3,22 +3,31 @@
 version: 2.1
 
 orbs:
+  aws-eks: circleci/aws-eks@0.2.0
   aws-ecr: circleci/aws-ecr@7.3.0
 
-workflows:
+jobs:
   build_and_push_image:
-    jobs:
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ECR_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: true
-          dockerfile: Dockerfile
-          no-output-timeout: 20m
-          profile-name: nodejs
-          region: AWS_REGION
-          repo: nodejs
-          skip-when-tags-exist: false
-          tag: 'latest'
+    - aws-ecr/build-and-push-image:
+        account-url: AWS_ECR_ACCOUNT_URL
+        aws-access-key-id: AWS_ACCESS_KEY_ID
+        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+        create-repo: true
+        dockerfile: Dockerfile
+        no-output-timeout: 20m
+        profile-name: nodejs
+        region: AWS_REGION
+        repo: nodejs
+        skip-when-tags-exist: false
+        tag: 'latest'
+
+
+workflows:
+  jobs:
+    - build_and_push_image
+    - deployment:
+        requires:
+          - build_and_push_image
+
 
 # https://github.com/CircleCI-Public/circleci-demo-aws-eks/blob/master/.circleci/config.yml
