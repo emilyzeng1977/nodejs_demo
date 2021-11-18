@@ -30,7 +30,8 @@ jobs:
             echo "run kubectl"
 
 workflows:
-  deployment:
+  version: 2
+  build-deploy:
     jobs:
       - build_and_push_image
 #    - deployment_nodes:
