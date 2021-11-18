@@ -19,4 +19,6 @@ workflows:
           region: AWS_REGION
           repo: nodejs
           skip-when-tags-exist: false
-          tag: 'latest,myECRRepoTag'
+          tag: 'latest'
+
+# https://github.com/CircleCI-Public/circleci-demo-aws-eks/blob/master/.circleci/config.yml
