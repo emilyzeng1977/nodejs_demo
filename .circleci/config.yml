@@ -30,8 +30,9 @@ jobs:
             echo "run kubectl"
 
 workflows:
-  jobs:
-    - build_and_push_image:
+  deployment:
+    jobs:
+      - build_and_push_image:
 #    - deployment_nodes:
 #        requires:
 #          - build_and_push_image
