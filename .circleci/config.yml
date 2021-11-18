@@ -21,11 +21,18 @@ jobs:
         skip-when-tags-exist: false
         tag: 'latest'
 
+  deployment_nodes:
+    executor: aws-eks/python3
+    steps:
+      - run:
+          name: "run kubectl"
+          command: |
+            echo "run kubectl"
 
 workflows:
   jobs:
     - build_and_push_image:
-    - deployment:
+    - deployment_nodes:
         requires:
           - build_and_push_image
 
