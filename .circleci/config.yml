@@ -32,9 +32,9 @@ jobs:
 workflows:
   jobs:
     - build_and_push_image:
-    - deployment_nodes:
-        requires:
-          - build_and_push_image
+#    - deployment_nodes:
+#        requires:
+#          - build_and_push_image
 
 
 # https://github.com/CircleCI-Public/circleci-demo-aws-eks/blob/master/.circleci/config.yml
