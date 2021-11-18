@@ -7,10 +7,7 @@ orbs:
   aws-ecr: circleci/aws-ecr@7.3.0
 
 jobs:
-  build_and_push_image:
-
-
-  deployment_nodes:
+  deployment-application:
     executor: aws-eks/python3
     steps:
       - run:
