@@ -24,7 +24,7 @@ jobs:
 
 workflows:
   jobs:
-    - build_and_push_image
+    - build_and_push_image:
     - deployment:
         requires:
           - build_and_push_image
