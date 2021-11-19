@@ -23,10 +23,10 @@ workflows:
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          region: AWS_REGION
           create-repo: true
           dockerfile: 'Dockerfile'
           no-output-timeout: 20m
-          region: AWS_REGION
           repo: 'nodejs'
           skip-when-tags-exist: false
           tag: ${CIRCLE_BRANCH}
