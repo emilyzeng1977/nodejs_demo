@@ -30,7 +30,7 @@ workflows:
           region: AWS_REGION
           repo: nodejs
           skip-when-tags-exist: false
-          tag: CIRCLE_BRANCH
+          tag: ${CIRCLE_BRANCH}
       - deployment-application:
           requires:
             - aws-ecr/build-and-push-image
