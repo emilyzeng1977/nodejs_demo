@@ -38,7 +38,7 @@ jobs:
           working_directory: k8s
           command: |
             cat nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > nodejs_deploy_updated.yaml
-            cat k8s/nodejs_svc.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" > k8s/nodejs_svc_updated.yaml
+            cat nodejs_svc.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" > nodejs_svc_updated.yaml
             echo '---------'
             cat nodejs_deploy_updated.yaml
             cat nodejs_svc_updated.yaml
