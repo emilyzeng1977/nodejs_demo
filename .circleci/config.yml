@@ -57,21 +57,21 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ECR_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          region: AWS_REGION
-          create-repo: true
-          dockerfile: 'Dockerfile'
-          no-output-timeout: 20m
-          repo: 'nodejs_demo'
-          skip-when-tags-exist: false
-          tag: ${CIRCLE_BRANCH}
+#      - aws-ecr/build-and-push-image:
+#          account-url: AWS_ECR_ACCOUNT_URL
+#          aws-access-key-id: AWS_ACCESS_KEY_ID
+#          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+#          region: AWS_REGION
+#          create-repo: true
+#          dockerfile: 'Dockerfile'
+#          no-output-timeout: 20m
+#          repo: 'nodejs_demo'
+#          skip-when-tags-exist: false
+#          tag: ${CIRCLE_BRANCH}
       - deployment-application:
           cluster-name: terraform-eks-demo
           aws-region: ${AWS_REGION}
           docker-image-name: ${AWS_ECR_ACCOUNT_URL}/nodejs_demo:${CIRCLE_BRANCH}
           version-info: ${CIRCLE_BRANCH}
-          requires:
-            - aws-ecr/build-and-push-image
+#          requires:
+#            - aws-ecr/build-and-push-image
