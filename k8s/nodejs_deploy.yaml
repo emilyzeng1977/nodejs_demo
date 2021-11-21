@@ -1,19 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-demo
+  labels:
+    app: nodejs-demo
+  name: nodejs-demo
+  namespace: default
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: nginx-demo
-  replicas: 2
+      app: nodejs-demo
   template:
     metadata:
       labels:
-        app: nginx-demo
+        app: nodejs-demo
     spec:
       containers:
-        - name: nginx
-          image: nginx
+        - name: status
+          image: 921312901458.dkr.ecr.ap-southeast-2.amazonaws.com/nodejs:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080

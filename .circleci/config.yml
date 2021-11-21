@@ -36,8 +36,12 @@ jobs:
       - run:
           name: "update yaml"
           command: |
-            cat k8s/nodejs_deploy.yaml | sed "s/nginx-demo/nginx-demo-${CIRCLE_BRANCH}/g"
+            cat k8s/nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g"
+            cat k8s/nodejs_deploy.yaml | sed "s/latest/${CIRCLE_BRANCH}/g"
+            cat k8s/nodejs_svc.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g"
+            echo '---------'
             cat k8s/nodejs_deploy.yaml
+            cat k8s/nodejs_svc.yaml
 #      - aws-eks/update-kubeconfig-with-authenticator:
 #          cluster-name: << parameters.cluster-name >>
 #          install-kubectl: true
@@ -57,13 +61,13 @@ workflows:
           create-repo: true
           dockerfile: 'Dockerfile'
           no-output-timeout: 20m
-          repo: 'nodejs'
+          repo: 'nodejs_demo'
           skip-when-tags-exist: false
           tag: ${CIRCLE_BRANCH}
       - deployment-application:
           cluster-name: terraform-eks-demo
           aws-region: ${AWS_REGION}
-          docker-image-name: ${AWS_ECR_ACCOUNT_URL}/eks_orb_demo_app:${CIRCLE_BRANCH}
+          docker-image-name: ${AWS_ECR_ACCOUNT_URL}/nodejs_demo:${CIRCLE_BRANCH}
           version-info: ${CIRCLE_BRANCH}
           requires:
             - aws-ecr/build-and-push-image
