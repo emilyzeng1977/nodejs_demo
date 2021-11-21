@@ -35,11 +35,12 @@ jobs:
             echo << parameters.version-info >>
       - run:
           name: "update deploy yaml"
+          working_directory: k8s
           command: |
-            cat k8s/nodejs_deploy.yaml
-            cat k8s/nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > k8s/nodejs_deploy.yaml
+            cat nodejs_deploy.yaml
+            cat nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > nodejs_deploy.yaml
             echo '---------'
-            cat k8s/nodejs_deploy.yaml
+            cat nodejs_deploy.yaml
             echo 'ABC'
       - run:
           name: "update svc yaml"
