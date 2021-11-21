@@ -40,6 +40,7 @@ jobs:
             cat k8s/nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > k8s/nodejs_deploy.yaml
             echo '---------'
             cat k8s/nodejs_deploy.yaml
+            echo 'ABC'
       - run:
           name: "update svc yaml"
           command: |
