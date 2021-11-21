@@ -5,15 +5,43 @@ version: 2.1
 orbs:
   aws-eks: circleci/aws-eks@0.2.0
   aws-ecr: circleci/aws-ecr@7.3.0
+  kubernetes: circleci/kubernetes@0.3.0
 
 jobs:
   deployment-application:
     executor: aws-eks/python3
+    parameters:
+      config_file:
+        type: string
+      cluster-name:
+        description: Name of the EKS cluster
+        type: string
+      aws-region:
+        description: AWS region
+        type: string
+      docker-image-name:
+        description: Name of the docker image to be deployed
+        type: string
+      version-info:
+        description: App version information
+        type: string
+
     steps:
+      - checkout
       - run:
-          name: "run kubectl"
+          name: "deployment-application"
           command: |
-            echo "run kubectl"
+            ls
+            echo << parameters.config_file >>
+            cat << parameters.config_file >>
+            echo '-----------------'
+            cat << parameters.config_file >> | sed "s/deploy-nginx/deploy-nginx-${CIRCLE_BRANCH}/g"
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
+          install-kubectl: true
+          aws-region: << parameters.aws-region >>
+      - kubernetes/create-or-update-resource:
+          resource-file-path: "k8s/deploy_nginx.yaml"
 
 workflows:
   version: 2
@@ -31,6 +59,11 @@ workflows:
           skip-when-tags-exist: false
           tag: ${CIRCLE_BRANCH}
       - deployment-application:
+          config_file: deploy.yml
+          cluster-name: terraform-eks-demo
+          aws-region: ${AWS_REGION}
+          docker-image-name: "${AWS_ECR_URL}/eks_orb_demo_app:${CIRCLE_SHA1}"
+          version-info: "${CIRCLE_SHA1}"
           requires:
             - aws-ecr/build-and-push-image
 
