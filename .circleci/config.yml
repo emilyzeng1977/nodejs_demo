@@ -38,9 +38,9 @@ jobs:
           working_directory: k8s
           command: |
             cat nodejs_deploy.yaml
-            cat nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > nodejs_deploy.yaml
+            cat nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > nodejs_deploy_1.yaml
             echo '---------'
-            cat nodejs_deploy.yaml
+            cat nodejs_deploy_1.yaml
             echo 'ABC'
       - run:
           name: "update svc yaml"
