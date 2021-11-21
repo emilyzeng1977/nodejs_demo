@@ -36,7 +36,7 @@ jobs:
       - run:
           name: "update yaml"
           command: |
-            cat k8s/nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > k8s/nodejs_deploy.yaml
+            cat k8s/nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" k8s/nodejs_deploy.yaml
             cat k8s/nodejs_svc.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" k8s/nodejs_svc.yaml
             echo '---------'
             cat k8s/nodejs_deploy.yaml
