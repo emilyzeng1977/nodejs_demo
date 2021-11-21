@@ -63,9 +63,6 @@ workflows:
           cluster-name: terraform-eks-demo
           aws-region: ${AWS_REGION}
           docker-image-name: "${AWS_ECR_URL}/eks_orb_demo_app:${CIRCLE_SHA1}"
-          version-info: "${CIRCLE_SHA1}"
+          version-info: ${CIRCLE_BRANCH}
           requires:
             - aws-ecr/build-and-push-image
-
-
-# https://github.com/CircleCI-Public/circleci-demo-aws-eks/blob/master/.circleci/config.yml
