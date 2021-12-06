@@ -67,6 +67,7 @@ workflows:
           skip-when-tags-exist: false
           tag: ${CIRCLE_BRANCH}
       - deployment-application:
+          type: approval
           cluster-name: terraform-eks-demo
           aws-region: ${AWS_REGION}
           docker-image-name: ${AWS_ECR_ACCOUNT_URL}/nodejs_demo:${CIRCLE_BRANCH}
