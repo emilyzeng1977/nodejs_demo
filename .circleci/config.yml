@@ -78,7 +78,7 @@ workflows:
           skip-when-tags-exist: false
           tag: ${CIRCLE_BRANCH}
           requires:
-            - GenerateAppVersion
+            - generateAppVersion
       - deployment-application:
           type: approval
           cluster-name: terraform-eks-demo
