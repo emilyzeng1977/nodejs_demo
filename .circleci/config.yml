@@ -10,7 +10,7 @@ orbs:
 jobs:
   generateAppVersion:
     docker:
-      - image: cimg/node:14.16.0
+      - image: cimg/node:14.17.0
     working_directory: ~/repo
     resource_class: xlarge
     steps:
