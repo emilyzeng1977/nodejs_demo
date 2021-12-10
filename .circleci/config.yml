@@ -16,6 +16,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
+      - run:
+          name: "semantic versioning"
+          command: |
+            npx semantic-release --debug --no-ci
 
   deployment-application:
     executor: aws-eks/python3
