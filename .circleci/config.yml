@@ -2,90 +2,21 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-orbs:
-  aws-eks: circleci/aws-eks@0.2.0
-  aws-ecr: circleci/aws-ecr@7.3.0
-  kubernetes: circleci/kubernetes@0.3.0
 
 jobs:
-  generateAppVersion:
+  createDockerImg:
     docker:
       - image: cimg/node:14.17.0
-    working_directory: ~/repo
-    resource_class: xlarge
     steps:
-      - attach_workspace:
-          at: ~/repo
-      - checkout
       - run:
           name: "semantic versioning"
           command: |
             npx semantic-release --debug --no-ci
 
-  deployment-application:
-    executor: aws-eks/python3
-    parameters:
-      cluster-name:
-        description: Name of the EKS cluster
-        type: string
-      aws-region:
-        description: AWS region
-        type: string
-      docker-image-name:
-        description: Name of the docker image to be deployed
-        type: string
-      version-info:
-        description: App version information
-        type: string
-    steps:
-      - checkout
-      - run:
-          name: ""
-          command: |
-            echo << parameters.cluster-name >>
-            echo << parameters.aws-region >>
-            echo << parameters.docker-image-name >>
-            echo << parameters.version-info >>
-      - run:
-          name: "update yaml files"
-          working_directory: k8s
-          command: |
-            cat nodejs_deploy.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" | sed "s/latest/${CIRCLE_BRANCH}/g" > nodejs_deploy_${CIRCLE_BRANCH}.yaml
-            cat nodejs_svc.yaml | sed "s/nodejs-demo/nodejs-demo-${CIRCLE_BRANCH}/g" > nodejs_svc_${CIRCLE_BRANCH}.yaml
-            echo '---------'
-            cat nodejs_deploy_${CIRCLE_BRANCH}.yaml
-            cat nodejs_svc_${CIRCLE_BRANCH}.yaml
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: << parameters.cluster-name >>
-          install-kubectl: true
-          aws-region: << parameters.aws-region >>
-      - kubernetes/create-or-update-resource:
-          resource-file-path: k8s/nodejs_deploy_${CIRCLE_BRANCH}.yaml
-      - kubernetes/create-or-update-resource:
-          resource-file-path: k8s/nodejs_svc_${CIRCLE_BRANCH}.yaml
 
 workflows:
   version: 2
   build-deploy:
     jobs:
-      - generateAppVersion
-      - aws-ecr/build-and-push-image:
-          type: approval
-          account-url: AWS_ECR_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          region: AWS_REGION
-          create-repo: true
-          dockerfile: 'Dockerfile'
-          no-output-timeout: 20m
-          repo: 'nodejs_demo'
-          skip-when-tags-exist: false
-          tag: ${CIRCLE_BRANCH}
-      - deployment-application:
-          type: approval
-          cluster-name: terraform-eks-demo
-          aws-region: ${AWS_REGION}
-          docker-image-name: ${AWS_ECR_ACCOUNT_URL}/nodejs_demo:${CIRCLE_BRANCH}
-          version-info: ${CIRCLE_BRANCH}
-          requires:
-            - aws-ecr/build-and-push-image
+      - createDockerImg
+
