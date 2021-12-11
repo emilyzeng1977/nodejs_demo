@@ -6,12 +6,12 @@ version: 2.1
 jobs:
   createDockerImg:
     docker:
-      - image: cimg/node:14.17.0
+      - image: docker:17.05.0-ce-git
     steps:
       - run:
-          name: "semantic versioning"
+          name: "create image"
           command: |
-            npx semantic-release --debug --no-ci
+            ls
 
 
 workflows:
