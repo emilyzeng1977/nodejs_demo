@@ -8,6 +8,20 @@ orbs:
   kubernetes: circleci/kubernetes@0.3.0
 
 jobs:
+  generateAppVersion:
+    docker:
+      - image: cimg/node:14.17.0
+    working_directory: ~/repo
+    resource_class: xlarge
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - checkout
+      - run:
+          name: "semantic versioning"
+          command: |
+            npx semantic-release --debug --no-ci
+
   deployment-application:
     executor: aws-eks/python3
     parameters:
@@ -23,7 +37,6 @@ jobs:
       version-info:
         description: App version information
         type: string
-
     steps:
       - checkout
       - run:
@@ -55,7 +68,9 @@ workflows:
   version: 2
   build-deploy:
     jobs:
+      - generateAppVersion
       - aws-ecr/build-and-push-image:
+          type: approval
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
