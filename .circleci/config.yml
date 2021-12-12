@@ -12,7 +12,7 @@ jobs:
       - run:
           name: "create image"
           command: |
-            ls
+            docker build -t zengemily79/nodejs_demo .
 
 
 workflows:
